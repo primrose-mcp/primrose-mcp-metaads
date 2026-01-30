@@ -1,0 +1,68 @@
+{
+  // ==========================================================================
+  // Meta Ads MCP Server - Wrangler Configuration
+  // ==========================================================================
+  //
+  // MULTI-TENANT ARCHITECTURE:
+  // This server supports multiple tenants. Credentials are passed via request
+  // headers, NOT stored as wrangler secrets. This allows a single deployment
+  // to serve multiple customers.
+  //
+  // AUTHENTICATION:
+  // Uses Meta/Facebook access tokens passed via X-Meta-Access-Token header
+  // ==========================================================================
+
+  "name": "primrose-mcp-metaads",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // ==========================================================================
+  // Environment Variables (server-wide configuration, not per-tenant)
+  // ==========================================================================
+  "vars": {
+    "CHARACTER_LIMIT": "50000",
+    "DEFAULT_PAGE_SIZE": "25",
+    "MAX_PAGE_SIZE": "100",
+    "META_API_VERSION": "v21.0"
+  },
+
+  // ==========================================================================
+  // Multi-Tenant Authentication (via Request Headers)
+  // ==========================================================================
+  //
+  // Tenant credentials are passed via HTTP headers on each request:
+  //
+  // Required:
+  //   X-Meta-Access-Token: Meta/Facebook OAuth access token
+  //
+  // Optional:
+  //   X-Meta-Ad-Account-Id: Default ad account ID (act_XXXX format)
+  //   X-Meta-Business-Id: Business Manager ID
+  //   X-Meta-App-Id: App ID (for app-scoped tokens)
+  //   X-Meta-App-Secret: App secret (for server-to-server)
+
+  // ==========================================================================
+  // KV Namespace (uncomment for OAuth token storage)
+  // ==========================================================================
+  // Create: npx wrangler kv namespace create "OAUTH_KV"
+  //
+  // "kv_namespaces": [
+  //   {
+  //     "binding": "OAUTH_KV",
+  //     "id": "<YOUR_KV_NAMESPACE_ID>"
+  //   }
+  // ],
+
+  // ==========================================================================
+  // Development
+  // ==========================================================================
+  "dev": {
+    "port": 8787,
+    "local_protocol": "http"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
